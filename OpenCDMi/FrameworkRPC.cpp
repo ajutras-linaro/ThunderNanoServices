@@ -14,6 +14,7 @@
 #include "CENCParser.h"
 
 #include <ocdm/open_cdm.h>
+#include <helper/socket_server_helper.h>
 
 extern "C" {
 
@@ -186,6 +187,11 @@ namespace Plugin {
                         , _sessionKey(nullptr)
                         , _sessionKeyLength(0)
                     {
+                        TRACE_L1("Waiting socket connection for SDP");
+                        if(_socket.Connect() != 0) {
+                            TRACE_L1("Cannot accept the socket connection for SDP");
+                        }
+
                         Core::Thread::Run();
                         TRACE_L1("Constructing buffer server side: %p - %s", this, name.c_str());
                     }
@@ -204,6 +210,8 @@ namespace Plugin {
                 private:
                     virtual uint32_t Worker() override
                     {
+                        int secureFd = -1;
+                        uint32_t secureSize = 0;
 
                         while (IsRunning() == true) {
 
@@ -211,6 +219,11 @@ namespace Plugin {
                             uint8_t* clearContent = nullptr;
 
                             RequestConsume(Core::infinite);
+
+                            // Receive secure FD
+                            if (_socket.ReceiveFileDescriptor(secureFd, secureSize) != 0) {
+                                TRACE_L1("Cannot receive secure file descriptor");
+                            }
 
                             if (IsRunning() == true) {
                                 uint8_t keyIdLength = 0;
@@ -256,6 +269,7 @@ namespace Plugin {
                     CDMi::IMediaKeySessionExt* _mediaKeysExt;
                     uint8_t* _sessionKey;
                     uint32_t _sessionKeyLength;
+                    ServerSocket _socket;
                 };
 
                 // IMediaKeys defines the MediaKeys interface.

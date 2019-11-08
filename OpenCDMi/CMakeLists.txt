@@ -19,6 +19,8 @@ set_target_properties(${MODULE_NAME} PROPERTIES
         CXX_STANDARD 11
         CXX_STANDARD_REQUIRED YES)
 
+target_sources(${TARGET} PRIVATE helper/socket_server_helper.cpp)
+
 target_link_libraries(${MODULE_NAME} 
         PRIVATE
                 ${NAMESPACE}Plugins::${NAMESPACE}Plugins 
