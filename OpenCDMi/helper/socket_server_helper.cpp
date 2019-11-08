@@ -53,7 +53,7 @@
 #include "cdmi.h"
 //#include "cdmi-log.h"
 
-#include "helper/socket_server_helper.h"
+#include "socket_server_helper.h"
 
 #define CDMI_DLOG() std::cout
 #define CDMI_ELOG() std::cout
