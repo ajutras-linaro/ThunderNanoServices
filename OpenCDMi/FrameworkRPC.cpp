@@ -187,12 +187,6 @@ namespace Plugin {
                         , _sessionKey(nullptr)
                         , _sessionKeyLength(0)
                     {
-                        // AJ-TODO Unique ID
-                        TRACE_L1("Waiting socket connection for SDP");
-                        if(_socket.Connect(0) != 0) {
-                            TRACE_L1("Cannot accept the socket connection for SDP");
-                        }
-
                         Core::Thread::Run();
                         TRACE_L1("Constructing buffer server side: %p - %s", this, name.c_str());
                     }
@@ -213,6 +207,12 @@ namespace Plugin {
                     {
                         int secureFd = -1;
                         uint32_t secureSize = 0;
+
+                        // AJ-TODO Unique ID
+                        TRACE_L1("Waiting socket connection for SDP");
+                        if(_socket.Connect(0) != 0) {
+                            TRACE_L1("Cannot accept the socket connection for SDP");
+                        }
 
                         while (IsRunning() == true) {
 
