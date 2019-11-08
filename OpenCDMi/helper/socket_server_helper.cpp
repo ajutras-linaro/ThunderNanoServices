@@ -39,11 +39,6 @@
 #include <string>
 #include <vector>
 
-#include "cdmi.h"
-//#include "cdmi-log.h"
-
-
-
 #include <stdint.h>
 #include <unistd.h>
 #include <string.h>
@@ -56,7 +51,7 @@
 #include <fstream>
 #include <iostream>
 #include "cdmi.h"
-#include "cdmi-log.h"
+//#include "cdmi-log.h"
 
 #include "socket/socket_server_helper.h"
 
