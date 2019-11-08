@@ -269,7 +269,7 @@ namespace Plugin {
                     CDMi::IMediaKeySessionExt* _mediaKeysExt;
                     uint8_t* _sessionKey;
                     uint32_t _sessionKeyLength;
-                    ServerSocket _socket;
+                    SocketServer _socket;
                 };
 
                 // IMediaKeys defines the MediaKeys interface.
