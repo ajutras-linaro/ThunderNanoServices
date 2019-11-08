@@ -9,7 +9,8 @@ add_library(${MODULE_NAME} SHARED
         OCDMJsonRpc.cpp
         CENCParser.cpp
         FrameworkRPC.cpp
-        Module.cpp)
+        Module.cpp
+        helper/socket_server_helper.cpp)
 
 # avoid -as-needed flag being set, this will break linking to libocdm.so
 string(REPLACE "-Wl,--as-needed" "" CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS}")
@@ -19,7 +20,7 @@ set_target_properties(${MODULE_NAME} PROPERTIES
         CXX_STANDARD 11
         CXX_STANDARD_REQUIRED YES)
 
-target_sources(${TARGET} PRIVATE helper/socket_server_helper.cpp)
+#target_sources(${TARGET} PRIVATE helper/socket_server_helper.cpp)
 
 target_link_libraries(${MODULE_NAME} 
         PRIVATE
