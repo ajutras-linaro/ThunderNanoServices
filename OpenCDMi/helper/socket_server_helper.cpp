@@ -58,7 +58,7 @@
 #define CDMI_DLOG() std::cout
 #define CDMI_ELOG() std::cout
 
-USE_NAMESPACE_OCDM();
+using namespace WPEFramework
 using namespace std;
 
 int SocketServer::sm_NextUniqueId = 0;
