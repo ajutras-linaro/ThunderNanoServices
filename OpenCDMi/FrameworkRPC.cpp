@@ -187,8 +187,9 @@ namespace Plugin {
                         , _sessionKey(nullptr)
                         , _sessionKeyLength(0)
                     {
+                        // AJ-TODO Unique ID
                         TRACE_L1("Waiting socket connection for SDP");
-                        if(_socket.Connect() != 0) {
+                        if(_socket.Connect(0) != 0) {
                             TRACE_L1("Cannot accept the socket connection for SDP");
                         }
 
