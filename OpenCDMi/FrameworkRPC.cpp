@@ -225,6 +225,9 @@ namespace Plugin {
                             if (_socket.ReceiveFileDescriptor(secureFd, secureSize) != 0) {
                                 TRACE_L1("Cannot receive secure file descriptor");
                             }
+                            else {
+                                TRACE_L1("Received secure file descriptor (secureFd: %d, secureSize: %u)", secureFd, secureSize);
+                            }
 
                             if (IsRunning() == true) {
                                 uint8_t keyIdLength = 0;
