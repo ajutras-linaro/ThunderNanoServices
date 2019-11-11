@@ -226,7 +226,7 @@ namespace Plugin {
                                 TRACE_L1("Cannot receive secure file descriptor");
                             }
                             else {
-                                TRACE_L1("Received secure file descriptor (secureFd: %d, secureSize: %u)", secureFd, secureSize);
+                                TRACE_L1("Received secure File descriptor (secureFd: %d, secureSize: %u)", secureFd, secureSize);
                             }
 
                             if (IsRunning() == true) {
@@ -246,7 +246,9 @@ namespace Plugin {
                                     &clearContent,
                                     keyIdLength,
                                     keyIdData,
-                                    InitWithLast15());
+                                    InitWithLast15(),
+                                    secureFd,
+                                    secureSize);
                                 if ((cr == 0) && (clearContentSize != 0)) {
                                     if (clearContentSize != BytesWritten()) {
                                         TRACE_L1("Returned clear sample size (%d) differs from encrypted buffer size (%d)", clearContentSize, BytesWritten());
