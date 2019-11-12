@@ -233,12 +233,13 @@ namespace Plugin {
                                 uint8_t keyIdLength = 0;
                                 const uint8_t* keyIdData = KeyId(keyIdLength);
                                 uint32_t SubSampleCount = SubSampleDataLength() / sizeof(uint32_t);
+                                uint32_t *SubSample = (uint32_t *)SubSampleData();
 
                                 int cr = _mediaKeys->Decrypt(
                                     _sessionKey,
                                     _sessionKeyLength,
-                                    SubSampleData(), //subsamples
-                                    SubSampleCount, //number of subsamples
+                                    SubSample,
+                                    SubSampleCount,
                                     IVKey(),
                                     IVKeyLength(),
                                     Buffer(),
