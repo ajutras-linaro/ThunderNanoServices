@@ -72,19 +72,19 @@ int SocketServer::Connect(int f_SocketChannelId)
   struct timeval timeout_tv;
 
   if(m_SocketFd >= 0) {
-    CDMI_DLOG() << "Socket connection already established, closing connection";
+    CDMI_DLOG() << "Socket connection already established, closing connection" << std::endl;
     Disconnect();
   }
 
   if(f_SocketChannelId < 0) {
-    CDMI_ELOG() << "Invalid socket channel ID";
+    CDMI_ELOG() << "Invalid socket channel ID" << std::endl;
     status = -1;
     goto handle_error;
   }
 
   lSocketFd = socket(AF_UNIX, SOCK_STREAM | SOCK_NONBLOCK, 0);
   if(lSocketFd < 0) {
-    CDMI_ELOG() << "Failure to create socket";
+    CDMI_ELOG() << "Failure to create socket" << std::endl;
     status = -1;
     goto handle_error;
   }
@@ -94,16 +94,16 @@ int SocketServer::Connect(int f_SocketChannelId)
   socketAddress.sun_family = AF_UNIX;
   sprintf(&socketAddress.sun_path[1], "opencdm_fd_communication_channel_0x%08x", f_SocketChannelId);
 
-  CDMI_DLOG() << "Binding socket (" << &socketAddress.sun_path[1] << ")";
+  CDMI_DLOG() << "Binding socket (" << &socketAddress.sun_path[1] << ")" << std::endl;
 
   if(bind(lSocketFd,  (struct sockaddr *)&socketAddress, sizeof(socketAddress)) < 0) {
-    CDMI_ELOG() << "Failure to bind socket";
+    CDMI_ELOG() << "Failure to bind socket" << std::endl;
     status = -1;
     goto handle_error;
   }
 
   if(listen(lSocketFd, 1) < 0) {
-    CDMI_ELOG() << "Failure to set to listen state";
+    CDMI_ELOG() << "Failure to set to listen state" << std::endl;
     status = -1;
     goto handle_error;
   }
@@ -116,7 +116,7 @@ int SocketServer::Connect(int f_SocketChannelId)
       break;
     } else if(errno != EWOULDBLOCK &&
               errno != EAGAIN) {
-      CDMI_ELOG() << "Failure to accept connection";
+      CDMI_ELOG() << "Failure to accept connection" << std::endl;
       status = -1;
       goto handle_error;
     }
@@ -125,7 +125,7 @@ int SocketServer::Connect(int f_SocketChannelId)
     trials--;
   }
   if(trials == 0) {
-    CDMI_ELOG() << "Timeout to accept connection";
+    CDMI_ELOG() << "Timeout to accept connection" << std::endl;
     status = -1;
     goto handle_error;
   }
@@ -136,11 +136,11 @@ int SocketServer::Connect(int f_SocketChannelId)
   timeout_tv.tv_usec = 0;
   status = setsockopt(m_SocketFd, SOL_SOCKET, SO_RCVTIMEO, (const void *)&timeout_tv, sizeof(timeout_tv));
   if(status < 0) {
-    CDMI_ELOG() << "Cannot configure recvmsg timeout";
+    CDMI_ELOG() << "Cannot configure recvmsg timeout" << std::endl;
     goto handle_error;
   }
 
-  CDMI_DLOG() << "SocketServer::Connect(): Connection is established";
+  CDMI_DLOG() << "SocketServer::Connect(): Connection is established" << std::endl;
 
 handle_error:
   if(status < 0) {
@@ -170,7 +170,7 @@ int SocketServer::ReceiveFileDescriptor(int &f_FileDescriptor, uint32_t &f_Size)
   struct cmsghdr *cmsg; // Pointer to control message
 
   if(m_SocketFd < 0) {
-    CDMI_ELOG() << "Invalid socket file descriptor";
+    CDMI_ELOG() << "Invalid socket file descriptor" << std::endl;
     status = -1;
     goto handle_error;
   }
@@ -197,25 +197,25 @@ int SocketServer::ReceiveFileDescriptor(int &f_FileDescriptor, uint32_t &f_Size)
   actualSize = recvmsg(m_SocketFd, &msg, 0);
   if(actualSize < 0) {
     if(errno == EWOULDBLOCK || errno == EAGAIN)
-      CDMI_ELOG() << "Cannot receive FD (Timeout)";
+      CDMI_ELOG() << "Cannot receive FD (Timeout)" << std::endl;
     else
-      CDMI_ELOG() << "Cannot receive FD";
+      CDMI_ELOG() << "Cannot receive FD" << std::endl;
     status = -1;
     goto handle_error;
   } else if((size_t)actualSize < sizeof(f_Size)) {
-    CDMI_ELOG() << "Data received is too small";
+    CDMI_ELOG() << "Data received is too small" << std::endl;
     status = -1;
     goto handle_error;
   }
 
   f_FileDescriptor = *(int *)CMSG_DATA(cmsg);
   /*if(f_FileDescriptor < 0) {
-    CDMI_ELOG() << "Invalid FD received";
+    CDMI_ELOG() << "Invalid FD received" << std::endl;
     status = -1;
   }*/
 
-  CDMI_DLOG() << "SocketServer::ReceiveFileDescriptor(): File descriptor is " << f_FileDescriptor;
-  CDMI_DLOG() << "SocketServer::ReceiveFileDescriptor(): File descriptor references " << f_Size << " bytes";
+  CDMI_DLOG() << "SocketServer::ReceiveFileDescriptor(): File descriptor is " << f_FileDescriptor << std::endl;
+  CDMI_DLOG() << "SocketServer::ReceiveFileDescriptor(): File descriptor references " << f_Size << " bytes" << std::endl;
 
 handle_error:
   if(status < 0) {
