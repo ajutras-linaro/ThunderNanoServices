@@ -234,6 +234,10 @@ namespace Plugin {
                                 const uint8_t* keyIdData = KeyId(keyIdLength);
                                 uint32_t SubSampleCount = SubSampleDataLength() / sizeof(uint32_t);
                                 uint32_t *SubSample = (uint32_t *)SubSampleData();
+                                
+                                for(uint32_t ii = 0; ii < SubSampleCount; ii++) {
+                                    TRACE_L1("SubSample[%u]: %u bytes", ii, SubSample[ii]);
+                                }
 
                                 int cr = _mediaKeys->Decrypt(
                                     _sessionKey,
