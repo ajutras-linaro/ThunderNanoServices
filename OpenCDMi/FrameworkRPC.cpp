@@ -188,11 +188,11 @@ namespace Plugin {
                         , _sessionKeyLength(0)
                     {
                         Core::Thread::Run();
-                        TRACE_L1("Constructing buffer server side: %p - %s", this, name.c_str());
+                        TRACE_L1("[AJ] Constructing buffer server side: %p - %s", this, name.c_str());
                     }
                     ~DataExchange()
                     {
-                        TRACE_L1("Destructing buffer server side: %p - %s", this, ::OCDM::DataExchange::Name().c_str());
+                        TRACE_L1("[AJ] Destructing buffer server side: %p - %s", this, ::OCDM::DataExchange::Name().c_str());
                         // Make sure the thread reaches a HALT.. We are done.
                         Core::Thread::Stop();
 
@@ -209,9 +209,9 @@ namespace Plugin {
                         uint32_t secureSize = 0;
 
                         // AJ-TODO Unique ID
-                        TRACE_L1("Waiting socket connection for SDP");
+                        TRACE_L1("[AJ] Waiting socket connection for SDP");
                         if(_socket.Connect(0) != 0) {
-                            TRACE_L1("Cannot accept the socket connection for SDP");
+                            TRACE_L1("[AJ] Cannot accept the socket connection for SDP");
                         }
 
                         while (IsRunning() == true) {
@@ -223,10 +223,10 @@ namespace Plugin {
 
                             // Receive secure FD
                             if (_socket.ReceiveFileDescriptor(secureFd, secureSize) != 0) {
-                                TRACE_L1("Cannot receive secure file descriptor");
+                                TRACE_L1("[AJ] Cannot receive secure file descriptor");
                             }
                             else {
-                                TRACE_L1("Received secure File descriptor (secureFd: %d, secureSize: %u)", secureFd, secureSize);
+                                TRACE_L1("[AJ] Received secure File descriptor (secureFd: %d, secureSize: %u)", secureFd, secureSize);
                             }
 
                             if (IsRunning() == true) {
@@ -236,7 +236,7 @@ namespace Plugin {
                                 uint32_t *SubSample = (uint32_t *)SubSampleData();
                                 
                                 for(uint32_t ii = 0; ii < SubSampleCount; ii++) {
-                                    TRACE_L1("SubSample[%u]: %u bytes", ii, SubSample[ii]);
+                                    TRACE_L1("[AJ] SubSample[%u]: %u bytes", ii, SubSample[ii]);
                                 }
 
                                 int cr = _mediaKeys->Decrypt(
@@ -255,9 +255,10 @@ namespace Plugin {
                                     InitWithLast15(),
                                     secureFd,
                                     secureSize);
+                                TRACE_L1("[AJ] Decrypt returned: %d", cr);
                                 if ((cr == 0) && (clearContentSize != 0)) {
                                     if (clearContentSize != BytesWritten()) {
-                                        TRACE_L1("Returned clear sample size (%d) differs from encrypted buffer size (%d)", clearContentSize, BytesWritten());
+                                        TRACE_L1("[AJ] Returned clear sample size (%d) differs from encrypted buffer size (%d)", clearContentSize, BytesWritten());
                                         Size(clearContentSize);
                                     }
 
