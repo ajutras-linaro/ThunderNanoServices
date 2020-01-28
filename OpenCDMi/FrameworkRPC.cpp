@@ -20,8 +20,6 @@
 #include <ocdm/open_cdm.h>
 #include "helper/socket_server_helper.h"
 
-#define ENABLE_SECURE_DATA_PATH 1
-
 extern "C" {
 
 typedef ::CDMi::ISystemFactory* (*GetDRMSystemFunction)();
