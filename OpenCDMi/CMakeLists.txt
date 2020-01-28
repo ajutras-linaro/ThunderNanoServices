@@ -20,6 +20,10 @@ set_target_properties(${MODULE_NAME} PROPERTIES
         CXX_STANDARD 11
         CXX_STANDARD_REQUIRED YES)
 
+if("${SECURE_DATA_PATH}" STREQUAL "ON")
+    add_definitions(-DENABLE_SECURE_DATA_PATH=1)
+endif()
+
 target_sources(${MODULE_NAME} PRIVATE helper/socket_server_helper.cpp)
 
 target_link_libraries(${MODULE_NAME} 
