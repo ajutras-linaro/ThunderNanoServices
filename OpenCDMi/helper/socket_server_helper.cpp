@@ -94,7 +94,9 @@ int SocketServer::Connect(int f_SocketChannelId)
   socketAddress.sun_family = AF_UNIX;
   sprintf(&socketAddress.sun_path[1], "opencdm_fd_communication_channel_0x%08x", f_SocketChannelId);
 
+#ifdef ENABLE_DEBUG_LOG
   CDMI_DLOG() << "Binding socket (" << &socketAddress.sun_path[1] << ")" << std::endl;
+#endif
 
   if(bind(lSocketFd,  (struct sockaddr *)&socketAddress, sizeof(socketAddress)) < 0) {
     CDMI_ELOG() << "Failure to bind socket" << std::endl;
@@ -140,7 +142,9 @@ int SocketServer::Connect(int f_SocketChannelId)
     goto handle_error;
   }
 
+#ifdef ENABLE_DEBUG_LOG
   CDMI_DLOG() << "SocketServer::Connect(): Connection is established" << std::endl;
+#endif
 
 handle_error:
   if(status < 0) {
